@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 class App extends Component {
   editor = undefined;
   state = {
+    accessToken:'',
     issues: [],
     selectedIssue: {
       id: undefined,
@@ -15,6 +16,15 @@ class App extends Component {
     }
   };
   async componentDidMount() {
+
+    while(true){
+      const token = prompt('Please enter your access token', 'access token');
+      if (token) {
+        github.setToken(token);
+        break;
+      } 
+    }
+    
     //download issues
     const issues = await github.getIssues();
     this.setState({ issues: issues });
@@ -42,7 +52,7 @@ class App extends Component {
   }
   onIssueSelect(issue) {
     this.setState({ selectedIssue: issue });
-    if(this.editor){
+    if (this.editor) {
       this.editor.render();
     }
   }
@@ -91,7 +101,7 @@ class App extends Component {
                 onChange={e => this.handleTitleChange(e)}
               />
               <SimpleMDE
-                getMdeInstance={(e)=>this.getInsance(e)} // <-- set callback prop
+                getMdeInstance={e => this.getInsance(e)} // <-- set callback prop
                 onChange={e => this.handleDescriptionChange(e)}
                 value={this.state.selectedIssue.bodyText}
               />
@@ -103,6 +113,5 @@ class App extends Component {
     );
   }
 }
-
 
 export default App;

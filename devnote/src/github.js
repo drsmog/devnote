@@ -1,12 +1,15 @@
 import axios from 'axios';
 
 export default {
+  setToken(token) {
+    this.token = token;
+  },
   async getIssues() {
     const response = await axios({
       url: 'https://api.github.com/graphql',
       method: 'post',
       headers: {
-        Authorization: 'bearer b7b951dfe2f6da88597e0549c5ffbebb65be9dfe'
+        Authorization: `bearer ${this.token}`
       },
       data: {
         query: `
@@ -35,7 +38,7 @@ export default {
       url: 'https://api.github.com/graphql',
       method: 'post',
       headers: {
-        Authorization: 'bearer b7b951dfe2f6da88597e0549c5ffbebb65be9dfe'
+        Authorization: `bearer ${this.token}`
       },
       data: {
         query: `
@@ -52,6 +55,6 @@ export default {
                 }`
       }
     });
-    return response.data.data.createIssue.issue.id
+    return response.data.data.createIssue.issue.id;
   }
 };
